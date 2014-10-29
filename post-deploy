@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
+
+CONTAINER=`cat /home/dokku/teste/CONTAINER`
+#CONTAINER_HOST=`docker inspect $CONTAINER | grep IPAddress | cut -d '"' -f 4`
+CONTAINER_HOST=`docker inspect $CONTAINER | grep IPAddress | cut -d '"' -f 4`
+
+cat<<EOF > /etc/proxy-suite/ftp-proxy.conf
+[-Global-]
+DestinationAddress $CONTAINER_HOST
+DestinationPort    2121
+Port               21
+User               nobody
+Group              nogroup
+EOF
+
+sudo /etc/init.d/ftp-proxy reload

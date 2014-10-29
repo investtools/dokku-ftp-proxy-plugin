@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
+
+
+if ! grep -q dokku-ftp-proxy-reload "/etc/sudoers"; then
+  touch /etc/sudoers.tmp
+  cp /etc/sudoers /tmp/sudoers.new
+  echo "%dokku ALL=(ALL)NOPASSWD:/etc/init.d/ftp-proxy reload # dokku-ftp-proxy-reload" >> /tmp/sudoers.new
+  EDITOR="cp /tmp/sudoers.new" visudo
+  rm /tmp/sudoers.new
+fi
+
+apt-get install -y ftp-proxy
+
+chown dokku:dokku /etc/proxy-suite/ftp-proxy.conf
+echo "RUN_DAEMON=yes" > /etc/default/ftp-proxy
