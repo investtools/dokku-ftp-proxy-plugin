@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
+APP="$1"
 
-CONTAINER=`cat /home/dokku/teste/CONTAINER`
+CONTAINER=`cat /home/dokku/$APP/CONTAINER`
 #CONTAINER_HOST=`docker inspect $CONTAINER | grep IPAddress | cut -d '"' -f 4`
 CONTAINER_HOST=`docker inspect $CONTAINER | grep IPAddress | cut -d '"' -f 4`
 
