@@ -14,3 +14,5 @@ apt-get install -y ftp-proxy
 
 chown dokku:dokku /etc/proxy-suite/ftp-proxy.conf
 echo "RUN_DAEMON=yes" > /etc/default/ftp-proxy
+
+sudo /etc/init.d/ftp-proxy start
